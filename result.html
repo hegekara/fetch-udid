@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UDID Bilgileriniz</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #151a36;
+            --accent-primary: #00d9ff;
+            --accent-secondary: #0066ff;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a8c9;
+            --success: #00ff88;
+            --card-bg: rgba(21, 26, 54, 0.6);
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 217, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(0, 102, 255, 0.15) 0%, transparent 50%);
+            animation: gradientShift 20s ease infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(5%, 5%) rotate(5deg); }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 0 2rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--success), #00cc70);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.3);
+            animation: successPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes successPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--success), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .info-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .device-info {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .info-row {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid var(--accent-primary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .info-row:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateX(5px);
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--accent-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: var(--text-primary);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            flex: 1;
+            text-align: right;
+            word-break: break-all;
+            position: relative;
+        }
+
+        .copy-button {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .copy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 217, 255, 0.4);
+        }
+
+        .copy-button:active {
+            transform: translateY(0);
+        }
+
+        .copy-button.copied {
+            background: linear-gradient(135deg, var(--success), #00cc70);
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .action-button {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .action-button:hover {
+            border-color: var(--accent-primary);
+            background: rgba(0, 217, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .warning-card {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .warning-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .warning-content {
+            flex: 1;
+        }
+
+        .warning-title {
+            font-weight: 700;
+            color: #ffc107;
+            margin-bottom: 0.5rem;
+        }
+
+        .warning-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 0 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .info-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .info-value {
+                text-align: left;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .action-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="success-icon">✓</div>
+            <h1>Cihaz Bilgileriniz</h1>
+            <p class="subtitle">UDID ve diğer cihaz bilgileriniz aşağıda gösterilmektedir</p>
+        </header>
+
+        <div id="loadingState" class="info-card loading">
+            <div class="spinner"></div>
+            <p>Cihaz bilgileri yükleniyor...</p>
+        </div>
+
+        <div id="emptyState" class="info-card empty-state" style="display: none;">
+            <div class="empty-icon">📱</div>
+            <h2 style="margin-bottom: 1rem; color: var(--text-primary);">Bilgi Bulunamadı</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                Cihaz bilgilerinizi almak için ana sayfadan profil indirmeniz gerekmektedir.
+            </p>
+            <button class="action-button" onclick="window.location.href='index.html'" style="margin: 0 auto;">
+                <span>🏠</span>
+                <span>Ana Sayfaya Dön</span>
+            </button>
+        </div>
+
+        <div id="resultContent" style="display: none;">
+            <div class="info-card">
+                <div class="device-info" id="deviceInfo">
+                    <!-- Device info will be populated here -->
+                </div>
+
+                <div class="actions">
+                    <button class="action-button" onclick="copyAllInfo()">
+                        <span>📋</span>
+                        <span>Tümünü Kopyala</span>
+                    </button>
+                    <button class="action-button" onclick="downloadInfo()">
+                        <span>💾</span>
+                        <span>TXT Olarak İndir</span>
+                    </button>
+                    <button class="action-button" onclick="window.location.href='index.html'">
+                        <span>🏠</span>
+                        <span>Ana Sayfa</span>
+                    </button>
+                </div>
+
+                <div class="warning-card">
+                    <div class="warning-icon">⚠️</div>
+                    <div class="warning-content">
+                        <div class="warning-title">Gizlilik Notu</div>
+                        <div class="warning-text">
+                            UDID bilgileriniz yalnızca tarayıcınızda gösterilmektedir. Hiçbir sunucuya gönderilmemekte veya saklanmamaktadır. 
+                            Bu bilgileri yalnızca güvendiğiniz kişi veya servislere verin.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>iOS UDID Öğrenme Aracı • Made with ❤️</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem;">Gizlilik odaklı tasarım - Hiçbir veri saklanmaz</p>
+        </footer>
+    </div>
+
+    <script>
+        // Parse URL parameters
+        function parseURLParams() {
+            const params = new URLSearchParams(window.location.search);
+            const deviceInfo = {};
+            
+            // Get all parameters
+            for (const [key, value] of params) {
+                deviceInfo[key] = value;
+            }
+            
+            return deviceInfo;
+        }
+
+        // Display device information
+        function displayDeviceInfo(info) {
+            const container = document.getElementById('deviceInfo');
+            
+            const labels = {
+                'UDID': 'UDID',
+                'IMEI': 'IMEI',
+                'ICCID': 'ICCID',
+                'VERSION': 'iOS Versiyonu',
+                'PRODUCT': 'Cihaz Modeli',
+                'SERIAL': 'Seri Numarası',
+                'MAC_ADDRESS_EN0': 'MAC Adresi'
+            };
+
+            let hasData = false;
+            
+            for (const [key, label] of Object.entries(labels)) {
+                if (info[key]) {
+                    hasData = true;
+                    const row = document.createElement('div');
+                    row.className = 'info-row';
+                    row.innerHTML = `
+                        <div class="info-label">${label}</div>
+                        <div class="info-value" id="value-${key}">${info[key]}</div>
+                        <button class="copy-button" onclick="copyToClipboard('${info[key]}', this)">
+                            <span>📋</span>
+                            <span>Kopyala</span>
+                        </button>
+                    `;
+                    container.appendChild(row);
+                }
+            }
+
+            // Show appropriate state
+            document.getElementById('loadingState').style.display = 'none';
+            
+            if (hasData) {
+                document.getElementById('resultContent').style.display = 'block';
+            } else {
+                document.getElementById('emptyState').style.display = 'block';
+            }
+        }
+
+        // Copy to clipboard function
+        function copyToClipboard(text, button) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHTML = button.innerHTML;
+                button.classList.add('copied');
+                button.innerHTML = '<span>✓</span><span>Kopyalandı</span>';
+                
+                setTimeout(() => {
+                    button.classList.remove('copied');
+                    button.innerHTML = originalHTML;
+                }, 2000);
+            }).catch(err => {
+                console.error('Kopyalama hatası:', err);
+                alert('Kopyalama başarısız oldu. Lütfen manuel olarak kopyalayın.');
+            });
+        }
+
+        // Copy all information
+        function copyAllInfo() {
+            const info = parseURLParams();
+            let text = 'CİHAZ BİLGİLERİ\n' + '='.repeat(50) + '\n\n';
+            
+            const labels = {
+                'UDID': 'UDID',
+                'IMEI': 'IMEI',
+                'ICCID': 'ICCID',
+                'VERSION': 'iOS Versiyonu',
+                'PRODUCT': 'Cihaz Modeli',
+                'SERIAL': 'Seri Numarası',
+                'MAC_ADDRESS_EN0': 'MAC Adresi'
+            };
+
+            for (const [key, label] of Object.entries(labels)) {
+                if (info[key]) {
+                    text += `${label}: ${info[key]}\n`;
+                }
+            }
+
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Tüm bilgiler panoya kopyalandı!');
+            }).catch(err => {
+                console.error('Kopyalama hatası:', err);
+                alert('Kopyalama başarısız oldu.');
+            });
+        }
+
+        // Download information as text file
+        function downloadInfo() {
+            const info = parseURLParams();
+            let text = 'CİHAZ BİLGİLERİ\n' + '='.repeat(50) + '\n\n';
+            
+            const labels = {
+                'UDID': 'UDID',
+                'IMEI': 'IMEI',
+                'ICCID': 'ICCID',
+                'VERSION': 'iOS Versiyonu',
+                'PRODUCT': 'Cihaz Modeli',
+                'SERIAL': 'Seri Numarası',
+                'MAC_ADDRESS_EN0': 'MAC Adresi'
+            };
+
+            for (const [key, label] of Object.entries(labels)) {
+                if (info[key]) {
+                    text += `${label}: ${info[key]}\n`;
+                }
+            }
+
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'cihaz-bilgileri.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            const deviceInfo = parseURLParams();
+            displayDeviceInfo(deviceInfo);
+        });
+    </script>
+</body>
+</html>
